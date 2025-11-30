@@ -45,6 +45,7 @@ map_types <- c("NA" = 0, "Unf"	= 1, "LwQ"	= 2, "Rec"	= 3, "BLQ"	= 4, "ALQ"	= 5, 
 map_finish <- c("NA" = 0, "Unf" = 1, "RFn" = 2, "Fin" = 3)
 
 recipe <- recipe(SalePrice ~ ., data = df_train) %>%
+  step_rm(Id) %>%
   # Transformar MSSubClass a categórica
   step_mutate(MSSubClass = as.character(MSSubClass)) %>%
   
