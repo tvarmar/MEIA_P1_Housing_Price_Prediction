@@ -1,5 +1,6 @@
 setwd("C:/Users/tania/Documents/UAX/MEIA/Trabajo1")
 rm(list = ls())
+
 library(caret) # Crear particiones
 library(tidyverse)
 library(tidymodels)
@@ -103,7 +104,7 @@ dir.create(file.path("data", "preprocessed"), showWarnings = FALSE, recursive = 
 write.csv(df_train_pr,
           file = file.path("data", "preprocessed", "train.csv"),
           row.names = FALSE)
-write.csv(df_valid_pr,
+write.csv(df_val_pr,
           file = file.path("data", "preprocessed", "valid.csv"),
           row.names = FALSE)
 write.csv(df_test_pr,
