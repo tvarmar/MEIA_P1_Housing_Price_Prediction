@@ -1,4 +1,5 @@
-rm(list=ls())
+#rm(list=ls())
+#setwd("Trabajo1")
 
 library(tidyverse)
 library(caret)
@@ -10,7 +11,6 @@ set.seed(123)
 # ------------------------------------------------------------------------------
 # Fase 1: Carga de datos ----
 # ------------------------------------------------------------------------------
-setwd("C:/Users/tania/Documents/UAX/MEIA/Trabajo1")
 
 train <- read.csv(file.path("data", "preprocessed", "train.csv"))
 val <- read.csv(file.path("data", "preprocessed", "valid.csv"))
@@ -184,16 +184,16 @@ cat(" - R2:", round(r2_pca_lasso, 4), "\n")
 # Fase 4: Comparación y guardado de modelos
 resultados <- data.frame(
   Modelo = c("PCR", "Ridge", "Lasso", "Ridge (PCA)", "Lasso (PCA)"),
-  RMSE = c(rmse_pcr, rmse_ridge, rmse_lasso, rmse_pca_ridge, rmse_pca_lasso),
-  MAE = c(mae_pcr, mae_ridge, mae_lasso, mae_pca_ridge, mae_pca_lasso),
-  R2 = c(r2_pcr, r2_ridge, r2_lasso, r2_pca_ridge, r2_pca_lasso)
+  RMSE = round(c(rmse_pcr, rmse_ridge, rmse_lasso, rmse_pca_ridge, rmse_pca_lasso), 4),
+  MAE  = round(c(mae_pcr, mae_ridge, mae_lasso, mae_pca_ridge, mae_pca_lasso), 4),
+  R2   = round(c(r2_pcr, r2_ridge, r2_lasso, r2_pca_ridge, r2_pca_lasso), 4)
 )
 
 print(resultados)
 
 mejor_rmse <- resultados$Modelo[which.min(resultados$RMSE)]
 mejor_mae <- resultados$Modelo[which.min(resultados$MAE)]
-mejor_r2 <- resultados$Modelo[which.min(resultados$R2)]
+mejor_r2 <- resultados$Modelo[which.max(resultados$R2)]
 
 cat("Mejor modelo\n")
 cat(" - RMSE:", mejor_rmse, "\n")
@@ -216,3 +216,4 @@ save(
 )
 
 cat("\nModelos y objetos PCA guadados en 'models/trained_models.RData")
+

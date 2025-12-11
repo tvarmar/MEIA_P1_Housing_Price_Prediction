@@ -1,5 +1,5 @@
-setwd("C:/Users/tania/Documents/UAX/MEIA/Trabajo1")
-rm(list = ls())
+#setwd("Trabajo1")
+#rm(list = ls())
 
 library(caret) # Crear particiones
 library(tidyverse)
@@ -46,6 +46,7 @@ map_finish <- c("NA" = 0, "Unf" = 1, "RFn" = 2, "Fin" = 3)
 
 recipe <- recipe(SalePrice ~ ., data = df_train) %>%
   step_rm(Id) %>%
+  step_rm(Utilities) %>%
   # Transformar MSSubClass a categórica
   step_mutate(MSSubClass = as.character(MSSubClass)) %>%
   
@@ -96,9 +97,8 @@ df_test_pr <- bake(prep, new_data = df_test)
 cat("\nNA en train:", sum(is.na(df_train_pr)), "\n")
 cat("NA en val:", sum(is.na(df_val_pr)), "\n")
 cat("NA en test:", sum(is.na(df_test_pr)), "\n")
-
 # ------------------------------------------------------------------------------
-# Fase 3: Expoertación de conjuntos ----
+# Fase 3: Exportación de conjuntos ----
 # ------------------------------------------------------------------------------
 dir.create(file.path("data", "preprocessed"), showWarnings = FALSE, recursive = TRUE)
 
@@ -116,3 +116,13 @@ cat("\n Datos preprocesados guardados en: data/preprocessed/\n")
 cat(" - train.csv", nrow(df_train_pr), "filas\n")
 cat(" - val.csv", nrow(df_val_pr), "filas\n")
 cat(" - test.csv", nrow(df_test_pr), "filas\n")
+
+# ------------------------------------------------------------------------------
+# Distribución de SalePrice tras preprocesamiento ----
+# ------------------------------------------------------------------------------
+ggplot(df_train_pr, aes(x = SalePrice)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "steelblue", alpha = 0.5) +
+  geom_density(col = "red") + 
+  theme_minimal() +
+  labs(title = "Distribución de SalePrice", x = "Precio", y = "Densidad")
+
